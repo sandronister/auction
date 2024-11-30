@@ -3,7 +3,7 @@ module github.com/sandronister/auction-go
 go 1.23.0
 
 require (
-	github.com/sandronister/enviroment-go v0.0.0-20240926121544-f8ceb33842c9
+	github.com/sandronister/enviroment-go v1.0.1
 	go.mongodb.org/mongo-driver v1.17.1
 	go.uber.org/zap v1.27.0
 )

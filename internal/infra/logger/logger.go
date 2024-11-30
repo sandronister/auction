@@ -5,23 +5,29 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var log *zap.Logger
+var log = &zap.Logger{}
 
 func Init() {
 	logConfiguration := zap.Config{
-		Level: zap.NewAtomicLevelAt(zap.InfoLevel),
-		Encoding: "json",
+		Level:       zap.NewAtomicLevelAt(zap.InfoLevel),
+		Encoding:    "json",
+		OutputPaths: []string{"stdout"},
 		EncoderConfig: zapcore.EncoderConfig{
-			MessageKey: "message",
-			LevelKey: "level",
-			TimeKey: "time",
-			EncodeTime: zapcore.ISO8601TimeEncoder,
-			EncodeLevel: zapcore.LowercaseLevelEncoder,
+			MessageKey:   "message",
+			LevelKey:     "level",
+			TimeKey:      "time",
+			EncodeTime:   zapcore.ISO8601TimeEncoder,
+			EncodeLevel:  zapcore.LowercaseLevelEncoder,
 			EncodeCaller: zapcore.ShortCallerEncoder,
 		},
 	}
 
-	log, _ = logConfiguration.Build()
+	var err error
+	log, err = logConfiguration.Build()
+	if err != nil {
+		panic(err)
+	}
+	
 
 }
 

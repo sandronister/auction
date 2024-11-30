@@ -7,11 +7,18 @@ import (
 	"github.com/sandronister/enviroment-go/pkg/load"
 )
 
-var config enviroment.Config;
+var config =enviroment.Config{};
 
 func init(){
-	varEnv := load.New("../.env")
-	errs := varEnv.Load(config)
+	logger.Init()
+	varEnv,err := load.New(".env")
+
+	if err != nil {
+		logger.Error("Error loading environment variables",err)
+		return
+	}
+
+	errs := varEnv.Load(&config)
 
 	if len(errs) > 0 {
 		for _, err := range errs {
@@ -23,11 +30,12 @@ func init(){
 
 
 func main(){
-	database,err:=mongodb.NewConnection(config.MongoURL,config.MongoDBName)	
+	_,err:=mongodb.NewConnection(config.MongoURL,config.MongoDBName)	
 
 	if err != nil {
 		logger.Error("Error connecting to database",err)
 		return
 	}
 	
+	logger.Info("Connected to database")
 }
