@@ -11,19 +11,18 @@ var config =enviroment.Config{};
 
 func init(){
 	logger.Init()
-	varEnv,err := load.New(".env")
+	varEnv,err := load.New("../.env")
 
 	if err != nil {
 		logger.Error("Error loading environment variables",err)
 		return
 	}
 
-	errs := varEnv.Load(&config)
+	
+	err = varEnv.LoadVariable(&config)
 
-	if len(errs) > 0 {
-		for _, err := range errs {
-			logger.Error("Error loading environment variables", err)
-		}
+	if err != nil {
+		logger.Error("Error loading environment variables",err)
 		return
 	}
 }
