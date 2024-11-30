@@ -5,11 +5,9 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type Logger struct{
-	log *zap.Logger
-}
+var log *zap.Logger
 
-func NewLogger() *Logger{
+func Init() {
 	logConfiguration := zap.Config{
 		Level: zap.NewAtomicLevelAt(zap.InfoLevel),
 		Encoding: "json",
@@ -23,20 +21,17 @@ func NewLogger() *Logger{
 		},
 	}
 
-	log, _ := logConfiguration.Build()
+	log, _ = logConfiguration.Build()
 
-	return &Logger{
-		log: log,
-	}
 }
 
-func (l *Logger) Info(message string,tags ...zap.Field){
-	l.log.Info(message,tags...)
-	l.log.Sync()
+func  Info(message string,tags ...zap.Field){
+	log.Info(message,tags...)
+	log.Sync()
 }
 
-func (l *Logger) Error(message string,err error, tags ...zap.Field){
+func  Error(message string,err error, tags ...zap.Field){
 	tags = append(tags,zap.NamedError("error",err))
-	l.log.Error(message,tags...)
-	l.log.Sync()
+	log.Error(message,tags...)
+	log.Sync()
 }
